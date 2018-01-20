@@ -1,0 +1,17 @@
+[package]
+name = "typenum-prime"
+version = "0.1.0"
+authors = ["David Creswick <dcrewi@gyrae.net>"]
+license = "MIT/Apache-2.0"
+description = "a marker trait for primality of type-level integers provided by typenum"
+repository = "https://github.com/dcrewi/typenum-prime-rs"
+documentation = "https://docs.rs/typenum-prime"
+readme = "README.md"
+keywords = ["prime", "mathematics"]
+categories = ["no-std"]
+
+[badges]
+maintenance = { status = "actively-developed" }
+
+[dependencies]
+typenum = "^1"
