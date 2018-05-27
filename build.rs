@@ -19,18 +19,35 @@ const MAX_SIEVED: usize = 1024;
 
 pub fn main() {
     let out_dir = env::var("OUT_DIR").unwrap();
-    let dest_path = Path::new(&out_dir).join("build-script-sieved.rs");
-    dump_sieve_to(dest_path).unwrap();
+    let dest_path = Path::new(&out_dir).join("build-script-generated-tests.rs");
+    write_tests_to(dest_path).unwrap();
 }
 
-fn dump_sieve_to<P: AsRef<Path>>(path: P) -> io::Result<()> {
+fn write_tests_to<P: AsRef<Path>>(path: P) -> io::Result<()> {
     let mut f = File::create(path)?;
     let is_prime = simplistic_sieve(MAX_SIEVED);
-    for (n, is_prime) in is_prime.into_iter().enumerate() {
+    writeln!(f, "#[cfg(test)]")?;
+    writeln!(f, "mod generated_tests {{")?;
+    writeln!(f, "    use typenum::Bit;")?;
+    writeln!(f, "    use typenum::consts::*;")?;
+    writeln!(f, "    use super::IsPrime;")?;
+    writeln!(f, "    #[test]")?;
+    writeln!(f, "    fn small_primes() {{")?;
+    writeln!(f, "        // primes")?;
+    for (n, &is_prime) in is_prime.iter().enumerate() {
         if is_prime {
-            writeln!(f, "impl Prime for U{} {{}}", n)?;
+            writeln!(f, "        assert!(<U{} as IsPrime>::Output::to_bool());", n)?;
         }
     }
+    writeln!(f, "")?;
+    writeln!(f, "        // composites")?;
+    for (n, &is_prime) in is_prime.iter().enumerate() {
+        if !is_prime {
+            writeln!(f, "        assert!(!<U{} as IsPrime>::Output::to_bool());", n)?;
+        }
+    }
+    writeln!(f, "    }}")?;
+    writeln!(f, "}}")?;
     Ok(())
 }
 

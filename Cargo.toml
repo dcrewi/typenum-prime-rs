@@ -14,4 +14,4 @@ categories = ["no-std"]
 maintenance = { status = "actively-developed" }
 
 [dependencies]
-typenum = "^1"
+typenum = "^1.6"

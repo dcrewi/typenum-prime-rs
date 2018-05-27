@@ -1,9 +1,9 @@
 # `typenum-prime`
 
-This is a rust crate that provides a marker trait for primality of
-type-level integers from the `typenum` crate. Unsigned integers up to
-1024 are marked by a build script which does a super-naive Sieve of
-Eratosthenes. Pull requests to extend it to all integers are welcome.
+This is a rust crate that provides a marker trait for compile-time
+primality testing for type-level integers from the `typenum`
+crate. The test is defined for all unsigned integers, though currently
+requires a high compiler recursion level.
 
 ## Usage
 
@@ -26,9 +26,3 @@ additional terms or conditions.
 
 I would prefer it if you included language to this effect in the
 commit message of your first pull request.
-
-
-## Todo
-
-- Extend the provided impl to all unsigned integers using type-level
-  operators. I expect the result to be slow.
