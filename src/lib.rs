@@ -31,7 +31,7 @@
 //! ```ignore
 //! pub struct StaticHashTable<K,V,N>
 //!     where N: Prime + ArrayLength<Option<(K,V)>> {
-//!     buckets: GenericArray<Option<(K,V)>>
+//!     buckets: GenericArray<Option<(K,V)>,N>
 //! }
 //! ```
 
