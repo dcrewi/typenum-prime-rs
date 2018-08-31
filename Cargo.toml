@@ -1,6 +1,6 @@
 [package]
 name = "typenum-prime"
-version = "0.1.0"
+version = "0.2.0"
 authors = ["David Creswick <dcrewi@gyrae.net>"]
 license = "MIT/Apache-2.0"
 description = "compile-time primality testing of type-level integers from the typenum crate"

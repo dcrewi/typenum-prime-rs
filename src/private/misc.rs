@@ -63,6 +63,7 @@ impl<U,B> Double for UInt<U,B> {
     type Output = UInt<UInt<U,B>,B0>;
 }
 
+// Alias for the result of Double.
 pub type DoubleOut<N> = <N as Double>::Output;
 
 

@@ -12,8 +12,9 @@
 //!
 //! The current algorithm is trial division by every prime number from
 //! `2` up to `next_integer_power_of_two(sqrt(n))`. The default
-//! compiler recursion limit may be insufficient, depending on the
-//! integer being tested. Raise it using a crate attribute:
+//! compiler recursion limit could sometimes be insufficient,
+//! depending on the magnitude of the integer being tested. When
+//! necessary, raise it using a crate attribute:
 //!
 //! ```
 //! #![recursion_limit="128"]

@@ -1,14 +1,16 @@
 # `typenum-prime`
 
 This is a rust crate that provides a marker trait for compile-time
-primality testing for type-level integers from the `typenum`
-crate. The test is defined for all unsigned integers, though currently
-requires a high compiler recursion level.
+primality testing of type-level integers from the `typenum` crate. The
+test is defined for all unsigned integers.
 
 ## Usage
 
 The crate is published on https://crates.io/ as `typenum-prime`. Add
 it to your `Cargo.toml` in the usual way.
+
+    [dependencies]
+    typenum-prime = "0.2"
 
 ## License
 
