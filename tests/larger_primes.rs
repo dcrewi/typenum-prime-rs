@@ -8,7 +8,6 @@
 // option. All files in the project carrying such notice may not be copied,
 // modified, or distributed except according to those terms.
 
-#![recursion_limit="256"]
 extern crate typenum;
 extern crate typenum_prime;
 
@@ -28,9 +27,10 @@ type MersenneNumber<N> = Sub1<Shleft<U1, N>>;
 
 #[test]
 fn test_larger_mersenne_primes() {
+    assert!(<MersenneNumber<U7> as IsPrime>::Output::to_bool()); // 127
     assert!(<MersenneNumber<U13> as IsPrime>::Output::to_bool()); // 8_191
-    // FIXME: these are prime, but too expensive to compute using the current algorithm.
-    //assert!(<MersenneNumber<U17> as IsPrime>::Output::to_bool()); // 131_071
-    //assert!(<MersenneNumber<U19> as IsPrime>::Output::to_bool()); // 524_287
+    assert!(<MersenneNumber<U17> as IsPrime>::Output::to_bool()); // 131_071
+    assert!(<MersenneNumber<U19> as IsPrime>::Output::to_bool()); // 524_287
+    // This would overflow the default compiler recursion level:
     //assert!(<MersenneNumber<U31> as IsPrime>::Output::to_bool()); // 2_147_483_647
 }

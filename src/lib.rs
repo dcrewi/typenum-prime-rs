@@ -8,14 +8,12 @@
 // option. All files in the project carrying such notice may not be copied,
 // modified, or distributed except according to those terms.
 
-//! Compile-time primality testing for `typenum` integers.
+//! Compile-time primality testing of `typenum` integers.
 //!
-//! The current algorithm is trial division by every number between 2
-//! and `floor(sqrt(n))` inclusive. This deepens the compiler
-//! recursion level once for every division test required plus
-//! additional recursion for the division. The default compiler
-//! recursion limit may be insufficient, depending on the integer
-//! being tested. Raise it using a crate attribute:
+//! The current algorithm is trial division by every prime number from
+//! `2` up to `next_integer_power_of_two(sqrt(n))`. The default
+//! compiler recursion limit may be insufficient, depending on the
+//! integer being tested. Raise it using a crate attribute:
 //!
 //! ```
 //! #![recursion_limit="128"]
@@ -23,10 +21,12 @@
 //!
 //! ## Example
 //!
-//! The intended use of the crate is to bound generic `typenum`
-//! parameters so they are always prime. For instance, you might want
-//! a statically-sized hash table to always have a prime number of
-//! buckets to reduce collisions of a low-budget hash algorithm.
+//! The intended use of this crate is to put a bound on type-level
+//! integer parameters so the compiler enforces their primality. For
+//! instance, you might want the number of buckets in a
+//! statically-sized hash table to always be a prime number so that
+//! hash collisions are reduced. Now you can let the compiler enforce
+//! this constraint.
 //!
 //! ```ignore
 //! pub struct StaticHashTable<K,V,N>
@@ -37,10 +37,8 @@
 
 #![no_std]
 #![warn(missing_docs)]
-// FIXME it would be nice if so much recursion was not necessary
-#![cfg_attr(test, recursion_limit="128")]
 
-extern crate typenum;
+#[cfg_attr(test, macro_use)] pub extern crate typenum;
 
 use typenum::marker_traits::{Bit, Unsigned};
 use typenum::consts::True;
@@ -52,32 +50,29 @@ use private::PrivateIsPrime;
 pub mod private;
 
 
+// Test all integers from 0 through 1024, inclusive.
+#[cfg(test)] pub mod test_small_constants;
+
+
 /// **Type operator** for primality testing.
 ///
-/// This trait should not be implemented outside this crate.
+/// This trait is implemented for all unsignd integers from the
+/// `typenum` crate.
 pub trait IsPrime: Unsigned {
     /// A boolean indicating the result of the primality test.
     type Output: Bit;
 }
 
-impl<N> IsPrime for N where N: PrivateIsPrime {
+impl<N> IsPrime for N where N: Unsigned + PrivateIsPrime {
     type Output = <N as PrivateIsPrime>::Output;
 }
 
-// Test all integers from 0 through 1024, inclusive.
-include!(concat!(env!("OUT_DIR"), "/build-script-generated-tests.rs"));
 
-
-/// **Marker trait** for prime, unsigned integers.
+/// **Marker trait** for prime, unsigned integers; equivalent to `IsPrime<Output=True>`
 ///
-/// This trait should not be implemented outside this crate.
-///
-/// This trait is automatically implemented for typenum unsigned
-/// integers that are prime. It is not defined for 0, 1, and composite
-/// integers.
-///
-/// Bounding by this trait is equivalent to bounding by
-/// `IsPrime<Output=True>`, which is how it's implemented.
+/// This trait is automatically implemented for unsigned integers from
+/// the `typenum` crate that are prime. It is not defined for 0, 1,
+/// and composite integers.
 pub trait Prime: Unsigned {}
 
 impl<N> Prime for N where N: Unsigned + IsPrime<Output=True> {}

@@ -3,7 +3,7 @@ name = "typenum-prime"
 version = "0.1.0"
 authors = ["David Creswick <dcrewi@gyrae.net>"]
 license = "MIT/Apache-2.0"
-description = "a marker trait for primality of type-level integers provided by typenum"
+description = "compile-time primality testing of type-level integers from the typenum crate"
 repository = "https://github.com/dcrewi/typenum-prime-rs"
 documentation = "https://docs.rs/typenum-prime"
 readme = "README.md"
@@ -14,4 +14,4 @@ categories = ["no-std"]
 maintenance = { status = "actively-developed" }
 
 [dependencies]
-typenum = "^1.6"
+typenum = "^1.9"
